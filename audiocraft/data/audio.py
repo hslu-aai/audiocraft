@@ -81,7 +81,7 @@ def _av_read(filepath: tp.Union[str, Path], seek_time: float = 0, duration: floa
         tuple of torch.Tensor, int: Tuple containing audio data and sample rate
     """
     _init_av()
-    with av.open(str(filepath)) as af:
+    with av.open(str(filepath), metadata_encoding= 'ISO-8859-1') as af:
         stream = af.streams.audio[0]
         sr = stream.codec_context.sample_rate
         num_frames = int(sr * duration) if duration >= 0 else -1
