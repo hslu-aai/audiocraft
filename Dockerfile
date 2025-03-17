@@ -33,10 +33,10 @@ RUN mkdir /assets
 
 COPY requirements.txt /assets/requirements.txt
 RUN pip install -r /assets/requirements.txt --upgrade --no-cache-dir
-RUN pip install -r 
+RUN pip install -U xformers torch torchaudio torchvision torchtext --index-url https://download.pytorch.org/whl/cu118
 
 COPY . /workspace/
 RUN git config --global --add safe.directory '*'
 
 ENV PYTHONPATH "$PYTHONPATH:./"
-RUN export USER="$(whoami)"
+ENV USER=root
