@@ -34,12 +34,11 @@ cache:
   write_shard: 0
   write_num_shards: 1
 
-
 dataset:
   batch_size: 128
   num_workers: 10
   segment_duration: 30
-  min_segment_ratio: 0.8  # lower values such as 0.5 result in generations with a lot of silence.
+  min_segment_ratio: 0.8 # lower values such as 0.5 result in generations with a lot of silence.
   return_info: true
   train:
     num_samples: 1000000 # need a randomly large number here for AudioDataset
@@ -53,7 +52,7 @@ metrics:
     use_gt: false
     model: tf
     tf:
-      bin: null  # path to local frechet_audio_distance code
+      bin: null # path to local frechet_audio_distance code
       model_path: //reference/fad/vggish_model.ckpt
   kld:
     use_gt: false
@@ -65,7 +64,7 @@ metrics:
     model: clap
     clap:
       model_path: //reference/clap/music_audioset_epoch_15_esc_90.14.pt
-      model_arch: 'HTSAT-base'
+      model_arch: "HTSAT-base"
       enable_fusion: false
   chroma_cosine:
     use_gt: false
@@ -77,7 +76,7 @@ metrics:
       argmax: true
 
 generate:
-  every: 25
+  every: 5
   num_workers: 5
   path: samples
   audio:
@@ -88,10 +87,10 @@ generate:
   lm:
     prompted_samples: true
     unprompted_samples: true
-    no_text_conditioning: false
+    no_text_conditioning: true
     gen_gt_samples: false
-    prompt_duration: null   # if not set, will use dataset.generate.segment_duration / 4
-    gen_duration: null      # if not set, will use dataset.generate.segment_duration
+    prompt_duration: null # if not set, will use dataset.generate.segment_duration / 4
+    gen_duration: null # if not set, will use dataset.generate.segment_duration
     remove_prompts: false
     # generation params
     use_sampling: false

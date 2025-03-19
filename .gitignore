@@ -61,3 +61,5 @@ dataset/*
 /local_scripts
 /notes
 .python-version
+checkpoints/
+results/

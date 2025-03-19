@@ -33,7 +33,7 @@ RUN mkdir /assets
 
 COPY requirements.txt /assets/requirements.txt
 RUN pip install -r /assets/requirements.txt --upgrade --no-cache-dir
-RUN pip install -U xformers torch torchaudio torchvision torchtext --index-url https://download.pytorch.org/whl/cu118
+RUN pip install -U xformers torch==2.1.0 "torchaudio>=2.0.0,<2.1.2" torchvision==0.16.0 torchtext==0.16.0 --index-url https://download.pytorch.org/whl/cu118
 
 COPY . /workspace/
 RUN git config --global --add safe.directory '*'

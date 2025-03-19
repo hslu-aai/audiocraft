@@ -111,3 +111,8 @@ _build:
 run_bash: _build  ##@Docker run an interactive bash inside the docker image (default: GPU=true)
 	@echo "Running bash with GPU being $(GPU) and GPU_ID $(GPU_ID)"
 	$(DOCKER_CMD) /bin/bash; \
+
+start_jupyter: _build  ##@Docker start a jupyter notebook inside the docker image
+	@echo "Starting jupyter notebook"
+	@-docker rm $(DOCKER_CONTAINER_NAME)
+	$(DOCKER_CMD) /bin/bash -c "jupyter notebook --allow-root --ip 0.0.0.0 --port 8888"
