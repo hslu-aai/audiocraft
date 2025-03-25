@@ -14,7 +14,7 @@ import pickle
 import torch
 import typing as tp
 
-from audiocraft.utils.utils import construct_frame_chords
+from ..utils.utils import construct_frame_chords
 from .genmodel import BaseGenModel
 from .loaders import load_compression_model, load_jasco_model
 from ..data.audio_utils import convert_audio
