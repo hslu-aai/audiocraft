@@ -14,7 +14,7 @@ import typing as tp
 import torch
 from torch import nn
 from torch.nn import functional as F
-from audiocraft.modules.transformer import StreamingTransformer, create_sin_embedding
+from ..modules.transformer import StreamingTransformer, create_sin_embedding
 
 
 @dataclass

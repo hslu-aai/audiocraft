@@ -11,7 +11,7 @@ from abc import ABC, abstractmethod
 import torch
 import torch.nn as nn
 
-from audiocraft.models.loaders import load_audioseal_models
+from ..models.loaders import load_audioseal_models
 
 
 class WMModel(ABC, nn.Module):
