@@ -472,8 +472,14 @@ class T5Conditioner(TextConditioner):
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             try:
-                self.t5_tokenizer = T5Tokenizer.from_pretrained(name)
-                t5 = T5EncoderModel.from_pretrained(name).train(mode=finetune)
+                # Try local_files_only first for offline operation
+                try:
+                    self.t5_tokenizer = T5Tokenizer.from_pretrained(name, local_files_only=True)
+                    t5 = T5EncoderModel.from_pretrained(name, local_files_only=True).train(mode=finetune)
+                except OSError:
+                    logger.warning(f"Local T5 files not found for {name}, downloading from hub...")
+                    self.t5_tokenizer = T5Tokenizer.from_pretrained(name)
+                    t5 = T5EncoderModel.from_pretrained(name).train(mode=finetune)
             finally:
                 logging.disable(previous_level)
         if finetune:
@@ -1103,7 +1109,12 @@ class CLAPEmbeddingConditioner(JointEmbeddingConditioner):
         warnings.warn("Sample rate for CLAP conditioner was fixed in version v1.1.0, (from 44.1 to 48 kHz). "
                       "Please retrain all models.")
         checkpoint = AudioCraftEnvironment.resolve_reference_path(checkpoint)
-        clap_tokenize = RobertaTokenizer.from_pretrained('roberta-base')
+        # Try local_files_only first for offline operation
+        try:
+            clap_tokenize = RobertaTokenizer.from_pretrained('roberta-base', local_files_only=True)
+        except OSError:
+            logger.warning("Local RoBERTa files not found, downloading from hub...")
+            clap_tokenize = RobertaTokenizer.from_pretrained('roberta-base')
         clap_model = laion_clap.CLAP_Module(enable_fusion=enable_fusion, amodel=model_arch)
         load_clap_state_dict(clap_model, checkpoint)
         clap_model.eval()

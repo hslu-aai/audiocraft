@@ -54,7 +54,14 @@ class CLAPTextConsistencyMetric(TextConsistencyMetric):
 
     def _initialize_model(self, model_path: tp.Union[str, Path], model_arch: str, enable_fusion: bool):
         model_path = AudioCraftEnvironment.resolve_reference_path(model_path)
-        self.tokenize = RobertaTokenizer.from_pretrained('roberta-base')
+        # Try local_files_only first for offline operation
+        try:
+            self.tokenize = RobertaTokenizer.from_pretrained('roberta-base', local_files_only=True)
+        except OSError:
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.warning("Local RoBERTa files not found, downloading from hub...")
+            self.tokenize = RobertaTokenizer.from_pretrained('roberta-base')
         self.model = laion_clap.CLAP_Module(enable_fusion=enable_fusion, amodel=model_arch)
         self.model_sample_rate = 48_000
         load_clap_state_dict(self.model, model_path)
