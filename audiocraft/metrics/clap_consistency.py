@@ -57,7 +57,7 @@ class CLAPTextConsistencyMetric(TextConsistencyMetric):
         # Try local_files_only first for offline operation
         try:
             self.tokenize = RobertaTokenizer.from_pretrained('roberta-base', local_files_only=True)
-        except OSError:
+        except TypeError:
             import logging
             logger = logging.getLogger(__name__)
             logger.warning("Local RoBERTa files not found, downloading from hub...")

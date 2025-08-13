@@ -476,7 +476,7 @@ class T5Conditioner(TextConditioner):
                 try:
                     self.t5_tokenizer = T5Tokenizer.from_pretrained(name, local_files_only=True)
                     t5 = T5EncoderModel.from_pretrained(name, local_files_only=True).train(mode=finetune)
-                except OSError:
+                except TypeError:
                     logger.warning(f"Local T5 files not found for {name}, downloading from hub...")
                     self.t5_tokenizer = T5Tokenizer.from_pretrained(name)
                     t5 = T5EncoderModel.from_pretrained(name).train(mode=finetune)
@@ -1112,7 +1112,7 @@ class CLAPEmbeddingConditioner(JointEmbeddingConditioner):
         # Try local_files_only first for offline operation
         try:
             clap_tokenize = RobertaTokenizer.from_pretrained('roberta-base', local_files_only=True)
-        except OSError:
+        except TypeError:
             logger.warning("Local RoBERTa files not found, downloading from hub...")
             clap_tokenize = RobertaTokenizer.from_pretrained('roberta-base')
         clap_model = laion_clap.CLAP_Module(enable_fusion=enable_fusion, amodel=model_arch)
