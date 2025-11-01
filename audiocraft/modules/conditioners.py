@@ -476,7 +476,7 @@ class T5Conditioner(TextConditioner):
                 try:
                     self.t5_tokenizer = T5Tokenizer.from_pretrained(name, local_files_only=True)
                     t5 = T5EncoderModel.from_pretrained(name, local_files_only=True).train(mode=finetune)
-                except TypeError:
+                except (TypeError, OSError, EnvironmentError):
                     logger.warning(f"Local T5 files not found for {name}, downloading from hub...")
                     self.t5_tokenizer = T5Tokenizer.from_pretrained(name)
                     t5 = T5EncoderModel.from_pretrained(name).train(mode=finetune)
